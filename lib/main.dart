@@ -43,8 +43,7 @@ class MyApp extends StatelessWidget {
         home: const Home(),
         debugShowCheckedModeBanner: false,
         translations: Languages(),
-        locale:
-            Locale(Hive.box("AppPrefs").get('currentAppLanguageCode') ?? "en"),
+      locale: const Locale("en"),
         fallbackLocale: const Locale("en"),
         builder: (context, child) {
           final mQuery = MediaQuery.of(context);

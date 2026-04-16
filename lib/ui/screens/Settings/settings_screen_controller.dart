@@ -12,8 +12,6 @@ import '../../../utils/update_check_flag_file.dart';
 import '/services/piped_service.dart';
 import '../Library/library_controller.dart';
 import '../../widgets/snackbar.dart';
-import '../../../utils/helper.dart';
-import '/services/music_service.dart';
 import '/ui/player/player_controller.dart';
 import '../Home/home_screen_controller.dart';
 import '/ui/utils/theme_controller.dart';
@@ -36,7 +34,6 @@ class SettingsScreenController extends GetxController {
   final isNewVersionAvailable = false.obs;
   final isLinkedWithPiped = false.obs;
   final stopPlyabackOnSwipeAway = false.obs;
-  final currentAppLanguageCode = "en".obs;
   final downloadLocationPath = "".obs;
   final exportLocationPath = "".obs;
   final downloadingFormat = "".obs;
@@ -78,12 +75,6 @@ class SettingsScreenController extends GetxController {
 
   Future<void> _setInitValue() async {
     final isDesktop = GetPlatform.isDesktop;
-    final appLang = setBox.get('currentAppLanguageCode') ?? "en";
-    currentAppLanguageCode.value = appLang == "zh_Hant"
-        ? "zh-TW"
-        : appLang == "zh_Hans"
-            ? "zh-CN"
-            : appLang;
     isBottomNavBarEnabled.value =
         isDesktop ? false : (setBox.get("isBottomNavBarEnabled") ?? false);
     noOfHomeScreenContent.value = setBox.get("noOfHomeScreenContent") ?? 3;
@@ -129,14 +120,6 @@ class SettingsScreenController extends GetxController {
     }
     autoDownloadFavoriteSongEnabled.value =
         setBox.get("autoDownloadFavoriteSongEnabled") ?? false;
-  }
-
-  void setAppLanguage(String? val) {
-    Get.updateLocale(Locale(val!));
-    Get.find<MusicServices>().hlCode = val;
-    Get.find<HomeScreenController>().loadContentFromNetwork(silent: true);
-    currentAppLanguageCode.value = val;
-    setBox.put('currentAppLanguageCode', val);
   }
 
   void setContentNumber(int? no) {

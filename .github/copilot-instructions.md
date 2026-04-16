@@ -9,8 +9,8 @@ Harmony Music is a Linux music streaming application built with Flutter. The app
 - **Framework**: Flutter 3.24.2+ (Dart SDK >=3.1.5 <4.0.0)
 - **State Management**: GetX (get: ^4.7.1)
 - **Audio Playback**:
-   - Linux: media_kit via just_audio_media_kit
-   - Background audio: audio_service (^0.18.17)
+  - Linux: media_kit via just_audio_media_kit
+  - Background audio: audio_service (^0.18.17)
 - **Local Storage**: Hive (^2.2.3) with hive_flutter
 - **YouTube API**: youtube_explode_dart (custom fork)
 - **HTTP Client**: dio (^5.7.0)
@@ -52,22 +52,26 @@ lib/
 ## Development Workflow
 
 ### Setup
+
 ```bash
 flutter pub get
 ```
 
 ### Linting
+
 ```bash
 flutter analyze
 ```
 
 ### Building
+
 ```bash
 # Linux
 flutter build linux
 ```
 
 ### Testing
+
 ```bash
 flutter test
 ```
@@ -118,12 +122,14 @@ flutter test
 ## Common Tasks
 
 ### Adding a New Screen
+
 1. Create screen file in `lib/ui/screens/[ScreenName]/`
 2. Create corresponding controller extending `GetxController`
 3. Register controller with GetX
 4. Add navigation route if needed
 
 ### Adding a New Feature
+
 1. Consider platform support (mobile vs desktop)
 2. Update relevant services if needed
 3. Create/update models as needed
@@ -131,6 +137,7 @@ flutter test
 5. Test on target platforms
 
 ### Modifying Audio Playback
+
 - Audio logic is in `services/audio_handler.dart`
 - Player UI in `ui/player/`
 - Platform-specific implementations via just_audio or media_kit

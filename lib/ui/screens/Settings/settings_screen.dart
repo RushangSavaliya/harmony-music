@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:harmonymusic/utils/helper.dart';
-import 'package:harmonymusic/utils/lang_mapping.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../widgets/common_dialog_widget.dart';
@@ -108,39 +106,6 @@ class SettingsScreen extends StatelessWidget {
                     onTap: () => showDialog(
                       context: context,
                       builder: (context) => const ThemeSelectorDialog(),
-                    ),
-                  ),
-                  ListTile(
-                    contentPadding: const EdgeInsets.only(left: 5, right: 10),
-                    title: Text("language".tr),
-                    subtitle: Text("languageDes".tr,
-                        style: Theme.of(context).textTheme.bodyMedium),
-                    trailing: Obx(
-                      () => DropdownButton(
-                        menuMaxHeight: Get.height - 250,
-                        dropdownColor: Theme.of(context).cardColor,
-                        underline: const SizedBox.shrink(),
-                        style: Theme.of(context).textTheme.titleSmall,
-                        value: settingsController.currentAppLanguageCode.value,
-                        items: langMap.entries
-                            .map((lang) => DropdownMenuItem(
-                                  value: lang.key,
-                                  child: Text(lang.value),
-                                ))
-                            .whereType<DropdownMenuItem<String>>()
-                            .toList(),
-                        selectedItemBuilder: (context) =>
-                            langMap.entries.map<Widget>((item) {
-                          return Container(
-                            alignment: Alignment.centerRight,
-                            constraints: const BoxConstraints(minWidth: 50),
-                            child: Text(
-                              item.value,
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: settingsController.setAppLanguage,
-                      ),
                     ),
                   ),
                   if (!isDesktop)

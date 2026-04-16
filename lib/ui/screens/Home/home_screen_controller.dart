@@ -247,10 +247,7 @@ class HomeScreenController extends GetxController {
   }
 
   String getContentHlCode() {
-    const List<String> unsupportedLangIds = ["ia", "ga", "fj", "eo"];
-    final userLangId =
-        Get.find<SettingsScreenController>().currentAppLanguageCode.value;
-    return unsupportedLangIds.contains(userLangId) ? "en" : userLangId;
+    return "en";
   }
 
   void onSideBarTabSelected(int index) {
