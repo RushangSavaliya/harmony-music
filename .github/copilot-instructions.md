@@ -144,7 +144,6 @@ flutter test
 
 ## CI/CD
 
-- Linting and build checks run on PRs via `.github/workflows/code_quality.yml`
 - Linux builds are the supported release target
 
 ## Testing
