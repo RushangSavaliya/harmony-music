@@ -2,16 +2,15 @@
 
 ## Project Overview
 
-Harmony Music is a cross-platform music streaming application built with Flutter, supporting Android, Windows, and Linux. The app streams music from YouTube/YouTube Music without requiring login or showing advertisements.
+Harmony Music is a Linux music streaming application built with Flutter. The app streams music from YouTube/YouTube Music without requiring login or showing advertisements.
 
 ## Technology Stack
 
 - **Framework**: Flutter 3.24.2+ (Dart SDK >=3.1.5 <4.0.0)
 - **State Management**: GetX (get: ^4.7.1)
 - **Audio Playback**:
-  - Android: just_audio (^0.9.46)
-  - Linux/Windows: media_kit via just_audio_media_kit
-  - Background audio: audio_service (^0.18.17)
+   - Linux: media_kit via just_audio_media_kit
+   - Background audio: audio_service (^0.18.17)
 - **Local Storage**: Hive (^2.2.3) with hive_flutter
 - **YouTube API**: youtube_explode_dart (custom fork)
 - **HTTP Client**: dio (^5.7.0)
@@ -64,12 +63,6 @@ flutter analyze
 
 ### Building
 ```bash
-# Android
-flutter build apk
-
-# Windows
-flutter build windows
-
 # Linux
 flutter build linux
 ```
@@ -99,9 +92,8 @@ flutter test
    - Keep models in `models/`
 
 4. **Platform Considerations**:
-   - Use `GetPlatform.isAndroid`, `GetPlatform.isDesktop`, etc. for platform-specific code
-   - Android uses just_audio, Desktop uses media_kit
-   - Consider mobile vs desktop UI patterns
+   - Keep Linux desktop behavior first-class
+   - Prefer desktop-safe APIs and avoid mobile-only dependencies
 
 5. **Assets and Resources**:
    - Icons are located in `assets/icons/`
@@ -119,7 +111,7 @@ flutter test
 2. **Ad-Free**: No advertisement integration
 3. **GPL v3.0 License**: Code must remain open source
 4. **Third Party Content**: Be mindful of copyright and content usage
-5. **Cross-Platform**: Changes should consider all target platforms (Android, Windows, Linux)
+5. **Linux-Only**: Changes should focus on the Linux target and avoid non-Linux platform assumptions
 6. **Offline Support**: App caches songs and supports offline playback
 7. **Background Playback**: Audio service integration for background music
 
@@ -146,8 +138,7 @@ flutter test
 ## CI/CD
 
 - Linting and build checks run on PRs via `.github/workflows/code_quality.yml`
-- APK builds are automated
-- Windows executable builds have separate workflow
+- Linux builds are the supported release target
 
 ## Testing
 

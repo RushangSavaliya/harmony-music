@@ -68,10 +68,8 @@ class MyAudioHandler extends BaseAudioHandler with GetxServiceMixin {
       ConcatenatingAudioSource(children: [], useLazyPreparation: false);
 
   MyAudioHandler() {
-    if (GetPlatform.isWindows || GetPlatform.isLinux) {
-      JustAudioMediaKit.title = 'Harmony music';
-      JustAudioMediaKit.protocolWhitelist = const ['http', 'https', 'file'];
-    }
+    JustAudioMediaKit.title = 'Harmony music';
+    JustAudioMediaKit.protocolWhitelist = const ['http', 'https', 'file'];
     _mediaLibrary = MediaLibrary();
     _player = AudioPlayer(
         audioLoadConfiguration: const AudioLoadConfiguration(
@@ -96,9 +94,6 @@ class MyAudioHandler extends BaseAudioHandler with GetxServiceMixin {
     loudnessNormalizationEnabled =
         appPrefsBox.get("loudnessNormalizationEnabled") ?? false;
     _listenForDurationChanges();
-    if (GetPlatform.isAndroid) {
-      _listenSessionIdStream();
-    }
   }
 
   Future<void> _createCacheDir() async {
@@ -116,14 +111,6 @@ class MyAudioHandler extends BaseAudioHandler with GetxServiceMixin {
     }
   }
 
-  void _listenSessionIdStream() {
-    _player.androidAudioSessionIdStream.listen((int? id) {
-      if (id != null) {
-        EqualizerService.initAudioEffect(id);
-      }
-    });
-  }
-
   void _notifyAudioHandlerAboutPlaybackEvents() {
     _player.playbackEventStream.listen((PlaybackEvent event) {
       final playing = _player.playing;
@@ -136,7 +123,6 @@ class MyAudioHandler extends BaseAudioHandler with GetxServiceMixin {
         systemActions: const {
           MediaAction.seek,
         },
-        androidCompactActionIndices: const [0, 1, 2],
         processingState: isSongLoading
             ? AudioProcessingState.loading
             : const {
@@ -195,11 +181,7 @@ class MyAudioHandler extends BaseAudioHandler with GetxServiceMixin {
   }
 
   void _listenToPlaybackForNextSong() {
-    final playerDurationOffset = GetPlatform.isWindows
-        ? 200
-        : GetPlatform.isLinux
-            ? 700
-            : 0;
+    const playerDurationOffset = 700;
     _player.positionStream.listen((value) async {
       if (_player.duration != null && _player.duration?.inSeconds != 0) {
         if (value.inMilliseconds >=

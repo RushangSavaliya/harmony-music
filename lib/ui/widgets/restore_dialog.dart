@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:terminate_restart/terminate_restart.dart';
+import 'package:audio_service/audio_service.dart';
 
 import '/ui/screens/Settings/settings_screen_controller.dart';
 import '/utils/helper.dart';
@@ -72,16 +72,12 @@ class RestoreDialog extends StatelessWidget {
                         color: Theme.of(context).textTheme.titleLarge!.color,
                         borderRadius: BorderRadius.circular(10)),
                     child: InkWell(
-                      onTap: () {
+                      onTap: () async {
                         if (restoreDialogController.restoreProgress.toInt() ==
                             restoreDialogController.filesToRestore.toInt()) {
-                          GetPlatform.isAndroid
-                              ? TerminateRestart.instance.restartApp(
-                                  options: const TerminateRestartOptions(
-                                    terminate: true,
-                                  ),
-                                )
-                              : exit(0);
+                          await Get.find<AudioHandler>()
+                              .customAction("saveSession");
+                          exit(0);
                         } else {
                           restoreDialogController.restore();
                         }
@@ -142,8 +138,7 @@ class RestoreDialogController extends GetxController {
     final FilePickerResult? pickedFileResult = await FilePicker.platform
         .pickFiles(
             dialogTitle: "Select backup file",
-            type: GetPlatform.isWindows ? FileType.custom : FileType.any,
-            allowedExtensions: GetPlatform.isWindows ? ['hmb'] : null,
+        type: FileType.any,
             allowMultiple: false);
 
     final String? pickedFile = pickedFileResult?.files.first.path;
@@ -198,20 +193,17 @@ class RestoreDialogController extends GetxController {
       await tempFilePickerDir.delete(recursive: true);
     }
 
-    // change file download path to support dir path in songs if system is windows or linux
-    if (GetPlatform.isWindows || GetPlatform.isLinux) {
-      // open the restored box
-      final newSongBox = await Hive.openBox("SongDownloads");
-      final downloadedSongs = newSongBox.values.toList();
-      for(final song in downloadedSongs) {
-        final songPath = song["url"];
-        if (songPath != null && songPath is String) {
-          final fileName = songPath.split("/").last;
-          final newFilePath = "$supportDirPath/Music/$fileName";
-          song["url"] = newFilePath;
-          song['streamInfo'][1]['url'] = newFilePath;
-          await newSongBox.put(song["videoId"], song);
-        }
+    // open the restored box
+    final newSongBox = await Hive.openBox("SongDownloads");
+    final downloadedSongs = newSongBox.values.toList();
+    for (final song in downloadedSongs) {
+      final songPath = song["url"];
+      if (songPath != null && songPath is String) {
+        final fileName = songPath.split("/").last;
+        final newFilePath = "$supportDirPath/Music/$fileName";
+        song["url"] = newFilePath;
+        song['streamInfo'][1]['url'] = newFilePath;
+        await newSongBox.put(song["videoId"], song);
       }
     }
 

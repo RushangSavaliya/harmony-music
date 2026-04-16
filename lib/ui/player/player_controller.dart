@@ -13,7 +13,6 @@ import '../widgets/snackbar.dart';
 import '/services/synced_lyrics_service.dart';
 import '/ui/screens/Settings/settings_screen_controller.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
-import '../../services/windows_audio_service.dart';
 import '../../utils/helper.dart';
 import '/models/media_Item_builder.dart';
 import '../screens/Home/home_screen_controller.dart';
@@ -91,9 +90,6 @@ class PlayerController extends GetxController
 
   @override
   void onReady() {
-    if (GetPlatform.isWindows) {
-      Get.put(WindowsAudioService());
-    }
     _restorePrevSession();
     super.onReady();
   }
@@ -121,10 +117,6 @@ class PlayerController extends GetxController
       initGesturePlayerStateAnimationController();
     }
 
-    // only for android auto
-    if (GetPlatform.isAndroid) {
-      _listenForCustomEvents();
-    }
   }
 
   void initGesturePlayerStateAnimationController() {
@@ -311,14 +303,6 @@ class PlayerController extends GetxController
     }
   }
 
-  void _listenForCustomEvents() {
-    _audioHandler.customEvent.listen((event) {
-      if (event['eventType'] == 'playFromMediaId') {
-        _playViaAndroidAuto(event['songId'], event['libraryId']);
-      }
-    });
-  }
-
   ///pushSongToPlaylist method clear previous song queue, plays the tapped song and push related
   ///songs into Queue
   Future<void> pushSongToQueue(MediaItem? mediaItem,
@@ -448,25 +432,6 @@ class PlayerController extends GetxController
       }
     }
     _audioHandler.addQueueItems(listToEnqueue);
-  }
-
-  void _playViaAndroidAuto(String songId, String libraryId) {
-    Hive.openBox(libraryId).then((box) {
-      List<MediaItem> songList = [];
-      final songJson = box.values.toList();
-      int songIndex = 0;
-      for (int i = 0; i < box.length; i++) {
-        final song = MediaItemBuilder.fromJson(songJson[i]);
-        if (song.id == songId) {
-          songIndex = i;
-        }
-        songList.add(song);
-      }
-      playPlayListSong(songList, songIndex);
-      if (libraryId != "SongDownloads") {
-        box.close();
-      }
-    });
   }
 
   void playNext(MediaItem song) {
@@ -821,9 +786,6 @@ class PlayerController extends GetxController
     scrollController.dispose();
     gesturePlayerStateAnimationController?.dispose();
     sleepTimer?.cancel();
-    if (GetPlatform.isWindows) {
-      Get.delete<WindowsAudioService>();
-    }
     // ensure wakelock disabled when player controller disposed
     try {
       _setWakelock(false);

@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,38 +9,6 @@ import '/services/music_service.dart';
 import '/ui/player/player_controller.dart';
 import '../ui/navigator.dart';
 import '../ui/widgets/snackbar.dart';
-
-class AppLinksController extends GetxController with ProcessLink {
-  late AppLinks _appLinks;
-  StreamSubscription<Uri>? _linkSubscription;
-
-  @override
-  void onInit() {
-    initDeepLinks();
-    super.onInit();
-  }
-
-  Future<void> initDeepLinks() async {
-    _appLinks = AppLinks();
-
-    // Check initial link if app was in cold state (terminated)
-    final appLink = await _appLinks.getInitialAppLink();
-    if (appLink != null) {
-      await filterLinks(appLink);
-    }
-
-    // Handle link when app is in warm state (front or background)
-    _linkSubscription = _appLinks.uriLinkStream.listen((uri) async {
-      await filterLinks(uri);
-    });
-  }
-
-  @override
-  void dispose() {
-    _linkSubscription?.cancel();
-    super.dispose();
-  }
-}
 
 mixin ProcessLink {
   Future<void> filterLinks(Uri uri) async {

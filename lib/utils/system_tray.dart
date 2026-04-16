@@ -18,9 +18,7 @@ class DesktopSystemTray extends GetxService with TrayListener {
   }
 
   Future<void> initSystemTray() async {
-    String path = GetPlatform.isWindows
-        ? 'assets/icons/icon.ico'
-        : 'assets/icons/icon.png';
+    const path = 'assets/icons/icon.png';
 
     await windowManager.ensureInitialized();
     final playerController = Get.find<PlayerController>();
@@ -87,23 +85,13 @@ class DesktopSystemTray extends GetxService with TrayListener {
 
   @override
   void onTrayIconMouseDown() {
-    if (GetPlatform.isWindows) {
-      windowManager.show();
-    } else {
-      trayManager.popUpContextMenu();
-    }
-
+    trayManager.popUpContextMenu();
     super.onTrayIconMouseDown();
   }
 
   @override
   void onTrayIconRightMouseDown() {
-    if (GetPlatform.isWindows) {
-      trayManager.popUpContextMenu();
-    } else {
-      windowManager.show();
-    }
-
+    windowManager.show();
     super.onTrayIconRightMouseDown();
   }
 }

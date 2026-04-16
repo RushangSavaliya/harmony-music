@@ -7,7 +7,7 @@
 <img src="https://github.com/anandnet/Harmony-Music/blob/main/cover.png" width="1200" >
 
 # Harmony Music
-A cross platform app for music streaming made with Flutter(Android, Windows, linux).
+A Linux app for music streaming made with Flutter.
 
 # Features
 * Ability to play song from Ytube/Ytube Music.
@@ -24,7 +24,6 @@ A cross platform app for music streaming made with Flutter(Android, Windows, lin
 * Dynamic Theme
 * Flexibility to switch between Bottom & Side Nav bar
 * Equalizer support
-* Android Auto support
 * Synced & Plain Lyrics support
 * Sleep Timer
 * No Advertisment
@@ -33,9 +32,7 @@ A cross platform app for music streaming made with Flutter(Android, Windows, lin
 
 
 # Download
-* Pleass choose one source for android apk. you won't be able to update from cross build apk source.
-
-<a href="https://github.com/anandnet/Harmony-Music/releases/latest"><img src ="https://github.com/anandnet/Harmony-Music/blob/main/don_github.png" width = "250"></a> <a href= "https://f-droid.org/packages/com.anandnet.harmonymusic"><img src = "https://github.com/anandnet/Harmony-Music/blob/main/down_fdroid.png" width = '250'></a></a> 
+Build the Linux app from source with `flutter build linux`.
 
 # Translation
 <a href="https://hosted.weblate.org/engage/harmony-music/">
@@ -74,7 +71,7 @@ Author of this Sotware is aware of the possibility of such damages and known def
 ```
 
 # Learning References & Credits
-<a href = 'https://docs.flutter.dev/'>Flutter documentation</a> - a best guide to learn cross platform Ui/app developemnt<br/>
+<a href = 'https://docs.flutter.dev/'>Flutter documentation</a> - a best guide to learn Flutter app developemnt<br/>
 <a href = 'https://suragch.medium.com/'>Suragch</a>'s Article related to Just audio & state management,architectural style<br/>
 <a href = 'https://github.com/sigma67'>sigma67</a>'s unofficial ytmusic api project<br/>
 App UI inspired by <a href = 'https://github.com/vfsfitvnm'>vfsfitvnm</a>'s ViMusic<br/>
@@ -82,8 +79,8 @@ Synced lyrics provided by <a href = 'https://lrclib.net' >LRCLIB</a> <br/>
 <a href = 'https://piped.video' >Piped</a> for playlists.
 
 #### Major Packages used
-* just_audio: ^0.9.40  -  audio player for android
-* media_kit: ^1.1.9 - audio player for linux and windows
+* just_audio: ^0.9.40  -  audio player for Linux playback
+* media_kit: ^1.1.9 - audio player backend for Linux desktop
 * audio_service: ^0.18.15 - manage background music & platform audio services
 * get: ^4.6.6 -  package for high-performance state management, intelligent dependency injection, and route management
 * youtube_explode_dart: ^2.0.2 - Third party package to provide song url
